@@ -1,0 +1,22 @@
+h1, h2, h3, h4, h5, p, ul {
+    display: block;
+}
+p, ul {
+    clear: both;
+}
+
+.left-margin-30 {
+    margin-left: 30px;
+}
+
+.user-form{
+    width: 80%;
+}
+
+.strong {
+    font-weight: bold;
+}
+
+.red, .errors {
+    color: red;
+}

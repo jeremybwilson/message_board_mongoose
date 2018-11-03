@@ -1,0 +1,45 @@
+<% include partials/header %>
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <% include partials/nav %>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <h1>Welcome to the <%= title %></h1><hr />
+                    <form action="/message" method='POST'>
+                        <div class="form-group">
+                            <label for='name'>Name: </label>
+                            <input class='form-control' type="text" name="name" class="form-control"></input>
+                            <label for='message'>Message: </label>
+                            <textarea name="message" class="form-control" rows="4"></textarea>
+                            <button id="post" class='btn btn-primary justify-content'>Post Message</button>
+                        </div>
+                    </form>
+                    <div id="messages">
+                        <div id="comments"></div>
+                    </div>
+                    <% for (var i in messages) { %>
+                        <p>Name: <%= messages[i].name %></p>
+                        <p>Message: <%= messages[i].message %></p>
+                        <% if (messages[i].comments) { %>
+                            <% for (j in messages[i].comments) { %>
+                                <div class='left-margin-30' style="margin-left: 30px;">
+                                    <p>Name: <%= messages[i].comments[j].name %></p>
+                                    <p>Comment: <%= messages[i].comments[j].comment %></p>
+                                </div>
+                            <% } %>
+                            <form class='left-margin-30 form-group' action="/new_comment/<%= messages[i]._id %>" method='POST'>
+                                <label for='name'>Name: </label>
+                                <input class='form-control' type="text" name="name" class="form-control"></input>
+                                <label for='comment'>Comment: </label>
+                                <textarea name="comment" class="form-control" rows="4"></textarea>
+                                <button type="submit" class='btn btn-primary justify-content'>Post Comment</button>
+                            </form>
+                        <% } %>
+                    <% } %>
+                </div>
+            </div>
+        </div>
+<% include partials/footer %>

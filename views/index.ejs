@@ -1,0 +1,51 @@
+<% include partials/header %>
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <% include partials/nav %>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <h1>Welcome to the <%= title %></h1><hr />
+                    <form action="/message" method='POST'>
+                        <div class="form-group">
+                            <label for='name'>Name: </label>
+                            <input class='form-control' type="text" name="name" class="form-control"></input>
+                            <label for='message'>Message: </label>
+                            <textarea name="message" class="form-control" rows="4"></textarea>
+                            <button id="post" class='btn btn-primary justify-content'>Post Message</button>
+                        </div>
+                    </form>
+                    <% if (typeof(errors) !== 'undefined' ) { %>
+                        <% for (const key in errors) { %>
+                         <h3><%= errors[key].message %></h3>
+                        <% } %>
+                     <% } else { %>
+                        <% if (typeof(errors) !== 'undefined' ) { %>
+                            <% for (const key in errors) { %>
+                             <h3 class='errors'><%= errors[key].message %></h3>
+                            <% } %>
+                        <% } else { %>
+                            
+                            <% for(const message of messages) { %>
+                                <h3>Name: <%= message.name %></h3>
+                                <h3>Message: <%= message.message %></h3>
+                                <% for (const comment of message._comments) { %>
+                                    <h5><%="Name: " + comment.name %></h5>
+                                    <h5><%="Comment: " + comment.text %></h5>
+                                <% } %>
+                                <form class='left-margin-30 form-group' action="/comment/<%= message._id %>" method='POST'>
+                                    <label for='name'>Name: </label>
+                                    <input class='form-control' type="text" name="name" class="form-control"></input>
+                                    <label for='comment'>Comment: </label>
+                                    <textarea name="comment" class="form-control" rows="4"></textarea>
+                                    <button type="submit" class='btn btn-primary justify-content'>Post Comment</button>
+                                </form>
+                            <% } %>
+                        </div>
+                    <% } %>
+                </div>
+            </div>
+        </div>
+<% include partials/footer %>
