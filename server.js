@@ -93,7 +93,7 @@ app.post('/message', (request, response) => {
 
 app.get('/', (request, response) => {
     console.log(`getting the index route`);
-    Message.find({}, false, true).populate('_comments').exec(function(err, messages){
+    Message.find({}, false).populate('_comments').exec(function(err, messages){
             console.log(`request.body info: ${request.body}`);
             console.log(`messages: ${messages}`);
             response.render('index', {messages: messages, title: 'Welcome to the Message Board App' });
@@ -110,12 +110,12 @@ app.post('/comment/:_id', (request, response) => {
     Message.findOne({_id:message_id}, function(err, message){
         const new_comment = new Comment({ name: request.body.name, text: request.body.comment });
         new_comment._message = message._id;
-        Message.update({ _id: message._id }, { $push: { _comments: new_comment }}, function(err){
+        Message.updateOne({ _id: message._id }, { $push: { _comments: new_comment }}, function(err){
         })
         new_comment.save(function(err){
             if(err){
                 console.log(`there were errors: ${err}`);
-                response.render('index', { errors: new_comment.errors });
+                response.render('index', { errors: new_comment.errors, title: 'Comments' });
             } else {
                 console.log(`comment added`);
                 response.redirect('/');

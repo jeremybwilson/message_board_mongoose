@@ -5,6 +5,10 @@ p, ul {
     clear: both;
 }
 
+.error {
+    font-size: .75em;
+}
+
 .left-margin-30 {
     margin-left: 30px;
 }
@@ -17,6 +21,6 @@ p, ul {
     font-weight: bold;
 }
 
-.red, .errors {
+.red, .errors, .error {
     color: red;
 }
