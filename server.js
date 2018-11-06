@@ -28,11 +28,7 @@ const stringParser = {
     useNewUrlParser: true
 }
 // mongodb connection
-mongoose.connect('mongodb://localhost:27017/message_board_db', function(err, db, stringParser){
-    if(err){
-        console.log(`there were errors in the db connection: ${err}`);
-    }
-});
+mongoose.connect('mongodb://localhost:27017/message_board_db', { useNewUrlParser: true });
 mongoose.connection.on('connected', () => console.log('MongoDB connected'));
 
 // schema
@@ -83,7 +79,7 @@ app.post('/message', (request, response) => {
     new_message.save(function(err){
         if(err){
             console.log(`there were errors: ${err}`);
-            response.render('index', {errors: new_message.errors });
+            response.render('index', {errors: new_message.errors, title: 'Message page' });
         } else {
             console.log(`successfully created new message`)
             response.redirect('/');
@@ -94,8 +90,8 @@ app.post('/message', (request, response) => {
 app.get('/', (request, response) => {
     console.log(`getting the index route`);
     Message.find({}, false).populate('_comments').exec(function(err, messages){
-            console.log(`request.body info: ${request.body}`);
-            console.log(`messages: ${messages}`);
+            // console.log(`request.body info: ${request.body}`);
+            // console.log(`messages: ${messages}`);
             response.render('index', {messages: messages, title: 'Welcome to the Message Board App' });
     });
 });
@@ -103,21 +99,20 @@ app.get('/', (request, response) => {
 // create new hop post action
 app.post('/comment/:_id', (request, response) => {
     console.log("POST DATA", request.body);
-    // This is where we would add the hop plant entry from request.body to the db.
-    // Create a new Hop with the hop name, origin, type, and description, and alpha values corresponding to those from request.body
-    const message_id = request.params._id;
+    const message_id = request.params.id;
     console.log(`posting to the add new comment route`);
-    Message.findOne({_id:message_id}, function(err, message){
+    Message.findOne({ _id:message_id }, (err, message) => {
         const new_comment = new Comment({ name: request.body.name, text: request.body.comment });
-        new_comment._message = message._id;
-        Message.updateOne({ _id: message._id }, { $push: { _comments: new_comment }}, function(err){
-        })
-        new_comment.save(function(err){
+        new_comment._message = message_id;
+        Message.update({ _id: message_id }, { $push: { _comments: new_comment }}, (err) => {
+
+        });
+        new_comment.save((err) => {
             if(err){
                 console.log(`there were errors: ${err}`);
                 response.render('index', { errors: new_comment.errors, title: 'Comments' });
             } else {
-                console.log(`comment added`);
+                console.log(`comment added inside of new_comment.save() function`);
                 response.redirect('/');
             }
         });

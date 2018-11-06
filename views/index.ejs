@@ -21,28 +21,28 @@
                         <% for (const key in errors) { %>
                          <p class='errors'><%= errors[key].message %></p>
                         <% } %>
-                        <% } else { %>
-                            <% if (typeof(errors) !== 'undefined' ) { %>
-                                <% for (const key in errors) { %>
-                                 <p class='errors'><%= errors[key].message %></p>
-                                <% } %>
-                            <% } else { %>
-                                <% for(const message of messages) { %>
-                                    <h3>Name: <%= message.name %></h3>
-                                    <h3>Message: <%= message.message %></h3>
-                                    <% for (const comment of message._comments) { %>
-                                        <h5><%="Name: " + comment.name %></h5>
-                                        <h5><%="Comment: " + comment.text %></h5>
-                                    <% } %>
-                                    <form class='left-margin-30 form-group' action="/comment/<%= message._id %>" method='POST'>
-                                        <label for='name'>Name: </label>
-                                        <input class='form-control' type="text" name="name" class="form-control"></input>
-                                        <label for='comment'>Comment: </label>
-                                        <textarea name="comment" class="form-control" rows="4"></textarea>
-                                        <button type="submit" class='btn btn-primary justify-content'>Post Comment</button>
-                                    </form>
-                                <% } %>
+                    <% } else { %>
+                        <% if (typeof(errors) !== 'undefined' ) { %>
+                            <% for (const key in errors) { %>
+                                <p class='errors'><%= errors[key].message %></p>
                             <% } %>
+                        <% } else { %>
+                            <% for(const message of messages) { %>
+                                <h3>Name: <%= message.name %></h3>
+                                <h3>Message: <%= message.message %></h3>
+                                <% for (const comment of message._comments) { %>
+                                    <h5><%="Name: " + comment.name %></h5>
+                                    <h5><%="Comment: " + comment.text %></h5>
+                                <% } %>
+                                <form class='left-margin-30 form-group' action="/comment/<%= message._id %>" method='POST'>
+                                    <label for='name'>Name: </label>
+                                    <input class='form-control' type="text" name="name" class="form-control"></input>
+                                    <label for='comment'>Comment: </label>
+                                    <textarea name="comment" class="form-control" rows="4"></textarea>
+                                    <button class='btn btn-primary justify-content'>Post Comment</button>
+                                </form>
+                            <% } %>
+                        <% } %>
                     <% } %>
                 </div>
             </div>
